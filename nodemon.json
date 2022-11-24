@@ -1,0 +1,11 @@
+{
+  "events": {
+    "restart": "tsc"
+  },
+  "delay": 2500,
+  "watch": ["./src/**/*"], 
+  "ext": "ts, js, json", 
+  "ignore": ["node_modules", "coverage", "dist", "resources", "uploads"],
+  "exec": "tsc && ts-node -r ./src/api/server.ts",
+  "restartable": "rs"
+}
