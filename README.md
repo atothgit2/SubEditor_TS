@@ -25,7 +25,7 @@ Megfelelo HTTP methodok
 * [x] Backend-en elmentett fileok legyenek listazhatoak (/api/file)
 * [x] Le lehessen kerdezni 1 file tartalmat (/api/file/{id})
 * [x] Legyenek torolhetoek
-* [] Szerkeszthetoek
+* [x] Szerkeszthetoek
 
 2 milestone
 ===========

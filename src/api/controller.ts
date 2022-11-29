@@ -49,20 +49,32 @@ const getFileContent = async (req: Request,res: Response, next: NextFunction) =>
   );
 };
 
-// PUT ONE (MODIFY)
+// PUT ONE (MODIFY FILE CONTENT)
 const editFileContent = async (req: Request, res: Response, next: NextFunction) => {
   let id: string = req.params.id;
-  let  body = JSON.stringify(req.body);
+  let body = req.body;
+  // console.log(body);
 
-  console.log(body);
-
-  fs.writeFile(path.join(__dirname, "..", "..", "uploads", id), body, function (err) {
+  fs.writeFile(path.join(__dirname, "..", "..", "uploads", `${id}.srt`), body, function (err) {
       if (err) throw err;
       console.log('Replaced!');
     });
-
-  res.status(200);
+  res.status(200).send("Done!");
 };
+
+// PUT METADATA (MODIFY METADATA)
+const editMetaData  = async (req: Request, res: Response, next: NextFunction) => {
+  let id: string = req.params.id;
+  let body = JSON.stringify(req.body); 
+  console.log(body);
+  console.log(typeof body);
+
+  fs.writeFile(path.join(__dirname, "..", "..", "uploads", `${id}.json`), body, function (err) {
+    if (err) throw err;
+    console.log('Replaced!');
+  });
+  res.status(200).send("Done!");
+}
 
 const deleteFile = async (req: Request, res: Response, next: NextFunction) => {
   let id: string = req.params.id;
@@ -82,5 +94,6 @@ export default {
   getFileList,
   getFileContent,
   editFileContent,
+  editMetaData,
   deleteFile,
 };
