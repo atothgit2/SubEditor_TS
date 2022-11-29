@@ -12,20 +12,20 @@ https://www.section.io/engineering-education/how-to-create-a-simple-rest-api-usi
 Backend
 ---------- 
 * [x] File feltoltes (neve is megadhato legyen (metainfo))
-* [ ] File eltarolasa a backend-en (csak disk-en nem db-ben, figyelj arra, hogy nev utkozes ne lehessen) (UUID)
+* [x] File eltarolasa a backend-en (csak disk-en nem db-ben, figyelj arra, hogy nev utkozes ne lehessen) (UUID)
 
 ```
-Minden configuracio vagy .env file-bol vagy environment variable-bol jojjon, hogy prod kornyezetben a prod configokat kulonbozo modon lehessen definialni
+* [x] Minden configuracio vagy .env file-bol vagy environment variable-bol jojjon, hogy prod kornyezetben a prod configokat kulonbozo modon lehessen definialni
 ```
 
 ### API
 ```
 Megfelelo HTTP methodok
 ```
-* Backend-en elmentett fileok legyenek listazhatoak (/api/file)
-* Le lehessen kerdezni 1 file tartalmat (/api/file/{id})
-* Legyenek torolhetoek
-* Szerkeszthetoek
+* [x] Backend-en elmentett fileok legyenek listazhatoak (/api/file)
+* [x] Le lehessen kerdezni 1 file tartalmat (/api/file/{id})
+* [x] Legyenek torolhetoek
+* [] Szerkeszthetoek
 
 2 milestone
 ===========

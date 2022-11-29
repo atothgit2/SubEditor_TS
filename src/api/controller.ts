@@ -1,120 +1,86 @@
 import { Request, Response, NextFunction } from "express";
-import axios, { AxiosResponse } from "axios";
 import { renameFile, createFile } from "../utils/utils";
-
-interface Post { // TO BE DELETED!
-  userId: Number;
-  id: Number;
-  title: String;
-  body: String;
-}
+import fs from "fs";
+import path from "path";
+import bodyParser from "body-parser";
+import app from "./server"
 
 export interface MetaData {
   title: String;
-  imdbscore: Number
+  imdbscore: Number;
 }
 
-const uploadFiles = async (req: Request, res: Response, next: NextFunction) => {
+// CREATE
+const uploadFile = async (req: Request, res: Response, next: NextFunction) => {
   let file = req.file;
   let metadata = JSON.stringify(req.body);
-  
+
   console.log(file);
   console.log(metadata);
 
-renameFile(`uploads/${req.file?.filename}`, `uploads/${req.file?.filename}.srt`)
-createFile(`uploads/${req.file?.filename}.json`, `${metadata}`)
+  renameFile(
+    `uploads/${req.file?.filename}`,
+    `uploads/${req.file?.filename}.srt`
+  );
+  createFile(`uploads/${req.file?.filename}.json`, `${metadata}`);
 
-    res.status(200).send(`Succesfull upload!`);
+  res.status(200).send(`Succesfull upload!`);
 };
 
-// reading files with 'fs': https://bobbyhadz.com/blog/typescript-import-use-fs-module
-
-// SAMPLES, TO BE REMOVED!
-// getting all posts
-const getPosts = async (req: Request, res: Response, next: NextFunction) => {
-  // get some posts
-  let result: AxiosResponse = await axios.get(
-    `https://jsonplaceholder.typicode.com/posts`
-  );
-  let posts: [Post] = result.data;
-  return res.status(200).json({
-    message: posts,
+// GET ALL
+const getFileList = async (req: Request, res: Response, next: NextFunction) => {
+  fs.readdir(path.join(__dirname, "..", "..", "uploads"), (err, data) => {
+    if (err) throw err;
+    res.status(200).send(data);
   });
 };
 
-// getting a single post
-const getPost = async (req: Request, res: Response, next: NextFunction) => {
-  // get the post id from the req
+// GET ONE W/ CONTENT
+const getFileContent = async (req: Request,res: Response, next: NextFunction) => {
   let id: string = req.params.id;
-  // get the post
-  let result: AxiosResponse = await axios.get(
-    `https://jsonplaceholder.typicode.com/posts/${id}`
-  );
-  let post: Post = result.data;
-  return res.status(200).json({
-    message: post,
-  });
-};
 
-// updating a post
-const updatePost = async (req: Request, res: Response, next: NextFunction) => {
-  // get the post id from the req.params
-  let id: string = req.params.id;
-  // get the data from req.body
-  let title: string = req.body.title ?? null;
-  let body: string = req.body.body ?? null;
-  // update the post
-  let response: AxiosResponse = await axios.put(
-    `https://jsonplaceholder.typicode.com/posts/${id}`,
-    {
-      ...(title && { title }),
-      ...(body && { body }),
+  fs.readFile(
+    path.join(__dirname, "..", "..", "uploads", id),
+    "utf8",
+    (err, data) => {
+      if (err) throw err;
+      res.status(200).send(data);
     }
   );
-  // return response
-  return res.status(200).json({
-    message: response.data,
-  });
 };
 
-// deleting a post
-const deletePost = async (req: Request, res: Response, next: NextFunction) => {
-  // get the post id from req.params
+// PUT ONE (MODIFY)
+const editFileContent = async (req: Request, res: Response, next: NextFunction) => {
   let id: string = req.params.id;
-  // delete the post
-  let response: AxiosResponse = await axios.delete(
-    `https://jsonplaceholder.typicode.com/posts/${id}`
-  );
-  // return response
-  return res.status(200).json({
-    message: "post deleted successfully",
-  });
+  let  body = JSON.stringify(req.body);
+
+  console.log(body);
+
+  fs.writeFile(path.join(__dirname, "..", "..", "uploads", id), body, function (err) {
+      if (err) throw err;
+      console.log('Replaced!');
+    });
+
+  res.status(200);
 };
 
-// adding a post
-const addPost = async (req: Request, res: Response, next: NextFunction) => {
-  // get the data from req.body
-  let title: string = req.body.title;
-  let body: string = req.body.body;
-  // add the post
-  let response: AxiosResponse = await axios.post(
-    `https://jsonplaceholder.typicode.com/posts`,
-    {
-      title,
-      body,
+const deleteFile = async (req: Request, res: Response, next: NextFunction) => {
+  let id: string = req.params.id;
+
+  fs.rm(
+    path.join(__dirname, "..", "..", "uploads", id),
+    { recursive: true },
+    (err) => {
+      if (err) throw err;
+      res.status(200).send("File removed!");
     }
   );
-  // return response
-  return res.status(200).json({
-    message: response.data,
-  });
 };
 
 export default {
-  getPosts,
-  getPost,
-  updatePost,
-  deletePost,
-  addPost,
-  uploadFiles,
+  uploadFile,
+  getFileList,
+  getFileContent,
+  editFileContent,
+  deleteFile,
 };

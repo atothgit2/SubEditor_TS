@@ -3,14 +3,12 @@ import controller from "./controller";
 import multer from "multer";
 
 const router = express.Router();
-const upload = multer({ dest: "./uploads"});
+const upload = multer({ dest: "./uploads" });
 
-router.post("/upload", upload.single("file"), controller.uploadFiles);
-
-router.get("/posts", controller.getPosts);
-router.get("/posts/:id", controller.getPost);
-router.put("/posts/:id", controller.updatePost);
-router.delete("/posts/:id", controller.deletePost);
-router.post("/posts", controller.addPost);
+router.post("/upload", upload.single("file"), controller.uploadFile);
+router.get("/file", controller.getFileList);
+router.get("/file/:id", controller.getFileContent);
+router.put("/file/:id", controller.editFileContent);
+router.delete("/file/:id", controller.deleteFile);
 
 export = router;

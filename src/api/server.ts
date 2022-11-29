@@ -1,15 +1,16 @@
 import http from 'http';
 import express from 'express';
-import fileUpload from 'express-fileupload'
-import serveStatic from 'serve-static'
 import routes from './routes'
+import dotenv from 'dotenv'
 
-export const app = express();
+dotenv.config()
+const app = express();
 
 /** Parse the request */
 app.use(express.urlencoded({ extended: false }));
 /** Takes care of JSON data */
-// router.use(express.json());
+app.use(express.json());
+app.use(express.text());
 
 /** RULES OF OUR API */
 app.use((req, res, next) => {
@@ -25,9 +26,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/', routes); /* Routes */
-app.use(fileUpload()); 
-app.use(serveStatic('/test'))
+app.use('/', routes);
 
 /** Error handling */
 app.use((req, res, next) => {
@@ -38,5 +37,9 @@ app.use((req, res, next) => {
 
 /** Server */
 const httpServer = http.createServer(app);
-const PORT: any = process.env.SERVER_PORT || 6060; // env variable not working!!!
-httpServer.listen(PORT, () => console.log(`The server is running on port ${PORT}`));
+const PORT: any = process.env.PORT
+httpServer.listen(PORT, () => console.log(`*** The server is running on port ${PORT} ***`));
+
+export default {
+  app
+}
