@@ -2,8 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { renameFile, createFile } from "../utils/utils";
 import fs from "fs";
 import path from "path";
-import bodyParser from "body-parser";
-import app from "./server"
 
 export interface MetaData {
   title: String;
@@ -84,6 +82,7 @@ const deleteFile = async (req: Request, res: Response, next: NextFunction) => {
     { recursive: true },
     (err) => {
       if (err) throw err;
+      console.log("File removed!");
       res.status(200).send("File removed!");
     }
   );
