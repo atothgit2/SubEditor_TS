@@ -4,5 +4,4 @@ dist
 src/app/resources
 .env
 .vscode
-uploads
 resources

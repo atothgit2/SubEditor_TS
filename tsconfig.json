@@ -1,5 +1,6 @@
 {
-  "exclude": ["./coverage", "./dist", "__tests__", "jest.config.js"],
+  "include": ["./src"],
+  "exclude": ["coverage", "dist", "__tests__", "jest.config.js", "node_modules"],
   "ts-node": {
     "transpileOnly": true,
     "files": true
@@ -104,5 +105,8 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+  },
+  "references": [   // declare the dependencies
+  { "path": "../SERVICE/" }  
+]
 }
